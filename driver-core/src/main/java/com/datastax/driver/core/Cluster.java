@@ -1518,7 +1518,7 @@ public class Cluster implements Closeable {
                             connectionFactory.open(host).closeAsync();
                             // Note that we want to do the pool creation on this thread because we want that
                             // when onUp return, the host is ready for querying
-                            onUp(host, MoreExecutors.sameThreadExecutor());
+                            onUp(host, MoreExecutors.newDirectExecutorService());
                             // If one of the connections in onUp failed, it signaled the error and triggerd onDown,
                             // but onDown aborted because this reconnection attempt was in progress (JAVA-577).
                             // Test the state now to check than onUp succeeded (we know it's up-to-date since onUp was

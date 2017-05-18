@@ -404,7 +404,7 @@ class SessionManager extends AbstractSession {
         // Note that with well behaved balancing policy (that ignore dead nodes), the removePool call is not necessary
         // since updateCreatedPools should take care of it. But better protect against non well behaving policies.
         removePool(host).force().get();
-        updateCreatedPools(MoreExecutors.sameThreadExecutor());
+        updateCreatedPools(MoreExecutors.newDirectExecutorService());
     }
 
     void onSuspected(Host host) {
