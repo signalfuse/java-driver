@@ -445,7 +445,7 @@ class HostConnectionPool {
                     if (connection.markForTrash.compareAndSet(false, true))
                         open.decrementAndGet();
                 }
-            }, MoreExecutors.sameThreadExecutor());
+            }, MoreExecutors.directExecutor());
             futures.add(future);
         }
         return futures;
