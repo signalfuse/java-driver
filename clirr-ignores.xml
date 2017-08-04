@@ -147,4 +147,15 @@
         <justification>False positive, the enclosing class is package-private so this was never exposed</justification>
     </difference>
 
+    <difference>
+        <differenceType>8001</differenceType> <!-- class removed -->
+        <className>com/datastax/driver/core/Native</className>
+        <justification>Removed</justification>
+    </difference>
+
+    <difference>
+        <differenceType>8001</differenceType> <!-- class removed -->
+        <className>com/datastax/driver/core/Native$LibCLoader$LibC</className>
+        <justification>Removed</justification>
+    </difference>
 </differences>

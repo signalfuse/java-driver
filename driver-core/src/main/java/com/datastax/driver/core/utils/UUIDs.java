@@ -15,7 +15,6 @@
  */
 package com.datastax.driver.core.utils;
 
-import com.datastax.driver.core.Native;
 import com.google.common.base.Charsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +42,6 @@ import java.util.concurrent.atomic.AtomicLong;
  * <ol>
  * <li>If the System  property <code>{@value PID_SYSTEM_PROPERTY}</code> is set then the value to use as a PID
  * will be read from that property;</li>
- * <li>Otherwise, if a native call to {@link Native#processId() getpid()} is possible, then the PID
- * will be read from that call;</li>
  * <li>Otherwise, an attempt will be made to read the PID from JMX's
  * {@link ManagementFactory#getRuntimeMXBean() RuntimeMXBean}, which is a well-known,
  * yet undocumented "hack", since most JVMs tend to use the JVM's PID as part of that MXBean name;</li>
@@ -148,14 +145,6 @@ public final class UUIDs {
                 LOGGER.info("PID obtained from System property {}: {}", PID_SYSTEM_PROPERTY, pid);
             } catch (NumberFormatException e) {
                 LOGGER.warn("Incorrect integer specified for PID in System property {}: {}", PID_SYSTEM_PROPERTY, pidProperty);
-            }
-        }
-        if (pid == null && Native.isGetpidAvailable()) {
-            try {
-                pid = Native.processId();
-                LOGGER.info("PID obtained through native call to getpid(): {}", pid);
-            } catch (Exception e) {
-                LOGGER.warn("Native call to getpid() failed", e);
             }
         }
         if (pid == null) {
