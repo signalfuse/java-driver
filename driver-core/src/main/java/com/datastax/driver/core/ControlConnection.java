@@ -51,7 +51,7 @@ class ControlConnection implements Connection.Owner {
     private static final String SELECT_PEERS = "SELECT * FROM system.peers";
     private static final String SELECT_LOCAL = "SELECT * FROM system.local WHERE key='local'";
 
-    private static final String SELECT_SCHEMA_PEERS = "SELECT peer, rpc_address, schema_version FROM system.peers";
+    private static final String SELECT_SCHEMA_PEERS = "SELECT peer, schema_version FROM system.peers";
     private static final String SELECT_SCHEMA_LOCAL = "SELECT schema_version FROM system.local WHERE key='local'";
 
     @VisibleForTesting
@@ -372,22 +372,16 @@ class ControlConnection implements Connection.Owner {
         // - preferred_ip: used by Ec2MultiRegionSnitch and GossipingPropertyFileSnitch, possibly others; contents unclear
 
         InetAddress broadcastAddress = peersRow.getInet("peer");
-        InetAddress rpcAddress = peersRow.getInet("rpc_address");
 
         if (broadcastAddress == null) {
             return null;
-        } else if (broadcastAddress.equals(connectedHost.getAddress()) || (rpcAddress != null && rpcAddress.equals(connectedHost.getAddress()))) {
+        } else if (broadcastAddress.equals(connectedHost.getAddress())) {
             // Some DSE versions were inserting a line for the local node in peers (with mostly null values). This has been fixed, but if we
             // detect that's the case, ignore it as it's not really a big deal.
             logger.debug("System.peers on node {} has a line for itself. This is not normal but is a known problem of some DSE version. Ignoring the entry.", connectedHost);
             return null;
-        } else if (rpcAddress == null) {
-            return null;
-        } else if (rpcAddress.equals(bindAllAddress)) {
-            logger.warn("Found host with 0.0.0.0 as rpc_address, using broadcast_address ({}) to contact it instead. If this is incorrect you should avoid the use of 0.0.0.0 server side.", broadcastAddress);
-            rpcAddress = broadcastAddress;
         }
-        return cluster.translateAddress(rpcAddress);
+        return cluster.translateAddress(broadcastAddress);
     }
 
     private Row fetchNodeInfo(Host host, Connection c) throws ConnectionException, BusyConnectionException, ExecutionException, InterruptedException {
