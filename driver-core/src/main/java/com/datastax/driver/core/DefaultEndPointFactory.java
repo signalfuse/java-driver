@@ -51,18 +51,10 @@ public class DefaultEndPointFactory implements EndPointFactory {
       return new TranslatedAddressEndPoint(translateAddress);
     } else {
       InetAddress broadcastAddress = peersRow.getInet("peer");
-      InetAddress rpcAddress = peersRow.getInet("rpc_address");
-      if (broadcastAddress == null || rpcAddress == null) {
+      if (broadcastAddress == null) {
         return null;
-      } else if (rpcAddress.equals(BIND_ALL_ADDRESS)) {
-        logger.warn(
-            "Found host with 0.0.0.0 as rpc_address, "
-                + "using broadcast_address ({}) to contact it instead. "
-                + "If this is incorrect you should avoid the use of 0.0.0.0 server side.",
-            broadcastAddress);
-        rpcAddress = broadcastAddress;
       }
-      InetSocketAddress translateAddress = cluster.manager.translateAddress(rpcAddress);
+      InetSocketAddress translateAddress = cluster.manager.translateAddress(broadcastAddress);
       return new TranslatedAddressEndPoint(translateAddress);
     }
   }

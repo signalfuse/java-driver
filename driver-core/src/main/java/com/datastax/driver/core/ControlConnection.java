@@ -73,7 +73,7 @@ class ControlConnection implements Connection.Owner {
   private static final String SELECT_LOCAL = "SELECT * FROM system.local WHERE key='local'";
 
   private static final String SELECT_SCHEMA_PEERS =
-      "SELECT peer, rpc_address, schema_version, host_id FROM system.peers";
+      "SELECT peer, schema_version, host_id FROM system.peers";
   private static final String SELECT_SCHEMA_LOCAL =
       "SELECT schema_version, host_id FROM system.local WHERE key='local'";
 
