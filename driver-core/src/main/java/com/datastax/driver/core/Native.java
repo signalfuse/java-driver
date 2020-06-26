@@ -138,6 +138,7 @@ public final class Native {
     public static final jnr.posix.POSIX POSIX;
 
     private static final boolean GETPID_AVAILABLE;
+    private static final boolean GETTIMEOFDAY_AVAILABLE;
 
     static {
       jnr.posix.POSIX posix;
@@ -161,6 +162,7 @@ public final class Native {
       }
       POSIX = posix;
       boolean getpid = false;
+      boolean gettimeofday = false;
       if (POSIX != null) {
         try {
           POSIX.getpid();
@@ -173,8 +175,20 @@ public final class Native {
                 "Native calls to getpid() not available on this system "
                     + "(set this logger level to DEBUG to see the full stack trace).");
         }
+        try {
+          POSIX.gettimeofday(POSIX.allocateTimeval());
+          gettimeofday = true;
+        } catch (Throwable t) {
+          if (LOGGER.isDebugEnabled())
+            LOGGER.debug("Native calls to gettimeofday() not available on this system.", t);
+          else
+            LOGGER.info(
+                "Native calls to gettimeofday() not available on this system "
+                    + "(set this logger level to DEBUG to see the full stack trace).");
+        }
       }
       GETPID_AVAILABLE = getpid;
+      GETTIMEOFDAY_AVAILABLE = gettimeofday;
     }
   }
 
@@ -186,7 +200,7 @@ public final class Native {
    */
   public static boolean isGettimeofdayAvailable() {
     try {
-      return LibCLoader.GETTIMEOFDAY_AVAILABLE;
+      return PosixLoader.GETTIMEOFDAY_AVAILABLE;
     } catch (NoClassDefFoundError e) {
       return false;
     }
@@ -220,10 +234,10 @@ public final class Native {
     if (!isGettimeofdayAvailable())
       throw new UnsupportedOperationException(
           "JNR C library not loaded or gettimeofday not available");
-    LibCLoader.Timeval tv = new LibCLoader.Timeval(LibCLoader.LIB_C_RUNTIME);
-    int res = LibCLoader.LIB_C.gettimeofday(tv, null);
+    jnr.posix.Timeval tv = PosixLoader.POSIX.allocateTimeval();
+    int res = PosixLoader.POSIX.gettimeofday(tv);
     if (res != 0) throw new IllegalStateException("Call to gettimeofday failed with result " + res);
-    return tv.tv_sec.get() * 1000000 + tv.tv_usec.get();
+    return tv.sec() * 1000000 + tv.usec();
   }
 
   /**
