@@ -1,3 +1,46 @@
+# SignalFx Fork of the Cassandra Java Driver
+
+This fork contains several local commits specific to our deployment of cassandra.
+
+## To build and deploy to archiva
+
+#### To build everything locally
+
+    mvn clean install
+
+#### To deploy the cassandra-driver-core artifact
+
+    mvn deploy:deploy-file \
+        -DpomFile=driver-core/pom.xml \
+        -Dfile=driver-core/target/cassandra-driver-core-3.9.0-sfx1.jar \
+        -Dsources=driver-core/target/cassandra-driver-core-3.9.0-sfx1-sources.jar \
+        -DrepositoryId=sf.internal \
+        -Durl=http://mvn-master.corp.signalfx.com:8080/archiva/repository/internal
+
+    mvn deploy:deploy-file \
+        -DpomFile=driver-core/pom.xml \
+        -Dfile=driver-core/target/cassandra-driver-core-3.9.0-sfx1.jar \
+        -Dsources=driver-core/target/cassandra-driver-core-3.9.0-sfx1-sources.jar \
+        -DrepositoryId=sf.internal \
+        -Durl=http://mvn.corp.signalfx.com:8080/archiva/repository/internal
+
+#### To deploy the cassandra-driver-parent artifact
+
+    mvn deploy:deploy-file \
+        -DpomFile=pom.xml \
+        -Dfile=pom.xml \
+        -DrepositoryId=sf.internal \
+        -Durl=http://mvn-master.corp.signalfx.com:8080/archiva/repository/internal
+
+    mvn deploy:deploy-file \
+        -DpomFile=pom.xml \
+        -Dfile=pom.xml \
+        -DrepositoryId=sf.internal \
+        -Durl=http://mvn.corp.signalfx.com:8080/archiva/repository/internal
+
+
+The original readme follows below...
+
 # Datastax Java Driver for Apache Cassandra®
 
 *If you're reading this on github.com, please note that this is the readme
@@ -9,7 +52,7 @@ docs](http://docs.datastax.com/en/developer/java-driver/latest/index.html) or vi
 3.9.0](https://github.com/datastax/java-driver/tree/3.9.0).*
 
 A modern, [feature-rich](manual/) and highly tunable Java client
-library for Apache Cassandra (2.1+) and using exclusively Cassandra's binary protocol 
+library for Apache Cassandra (2.1+) and using exclusively Cassandra's binary protocol
 and Cassandra Query Language v3. _Use the [DataStax Enterprise Java driver][dse-driver]
 for better compatibility and support for DataStax Enterprise._
 
@@ -45,7 +88,7 @@ The driver contains the following modules:
 
 - JIRA (bug tracking): https://datastax-oss.atlassian.net/browse/JAVA
 - MAILING LIST: https://groups.google.com/a/lists.datastax.com/forum/#!forum/java-driver-user
-- DATASTAX ACADEMY SLACK: #datastax-drivers on https://academy.datastax.com/slack 
+- DATASTAX ACADEMY SLACK: #datastax-drivers on https://academy.datastax.com/slack
 - TWITTER: [@dsJavaDriver](https://twitter.com/dsJavaDriver) tweets Java
   driver releases and important announcements (low frequency).
   [@DataStaxEng](https://twitter.com/datastaxeng) has more news including
@@ -109,17 +152,17 @@ UDT and tuple support is available only when using Apache Cassandra 2.1 or highe
 
 Other features are available only when using Apache Cassandra 2.0 or higher (e.g. result set paging,
 [BatchStatement](https://github.com/datastax/java-driver/blob/3.x/driver-core/src/main/java/com/datastax/driver/core/BatchStatement.java),
-[lightweight transactions](http://www.datastax.com/documentation/cql/3.1/cql/cql_using/use_ltweight_transaction_t.html) 
--- see [What's new in Cassandra 2.0](http://www.datastax.com/documentation/cassandra/2.0/cassandra/features/features_key_c.html)). 
-Trying to use these with a cluster running Cassandra 1.2 will result in 
+[lightweight transactions](http://www.datastax.com/documentation/cql/3.1/cql/cql_using/use_ltweight_transaction_t.html)
+-- see [What's new in Cassandra 2.0](http://www.datastax.com/documentation/cassandra/2.0/cassandra/features/features_key_c.html)).
+Trying to use these with a cluster running Cassandra 1.2 will result in
 an [UnsupportedFeatureException](https://github.com/datastax/java-driver/blob/3.x/driver-core/src/main/java/com/datastax/driver/core/exceptions/UnsupportedFeatureException.java) being thrown.
 
 The java driver supports Java JDK versions 6 and above.
 
-If using _DataStax Enterprise_, the [DataStax Enterprise Java driver][dse-driver] provides 
+If using _DataStax Enterprise_, the [DataStax Enterprise Java driver][dse-driver] provides
 more features and better compatibility.
 
-__Disclaimer__: Some _DataStax/DataStax Enterprise_ products might partially work on 
+__Disclaimer__: Some _DataStax/DataStax Enterprise_ products might partially work on
 big-endian systems, but _DataStax_ does not officially support these systems.
 
 ## Upgrading from previous versions
