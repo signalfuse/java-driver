@@ -12,15 +12,15 @@ This fork contains several local commits specific to our deployment of cassandra
 
     mvn deploy:deploy-file \
         -DpomFile=driver-core/pom.xml \
-        -Dfile=driver-core/target/cassandra-driver-core-3.9.0-sfx1.jar \
-        -Dsources=driver-core/target/cassandra-driver-core-3.9.0-sfx1-sources.jar \
+        -Dfile=driver-core/target/cassandra-driver-core-3.9.0-sfx2.jar \
+        -Dsources=driver-core/target/cassandra-driver-core-3.9.0-sfx2-sources.jar \
         -DrepositoryId=sf.internal \
         -Durl=http://mvn-master.corp.signalfx.com:8080/archiva/repository/internal
 
     mvn deploy:deploy-file \
         -DpomFile=driver-core/pom.xml \
-        -Dfile=driver-core/target/cassandra-driver-core-3.9.0-sfx1.jar \
-        -Dsources=driver-core/target/cassandra-driver-core-3.9.0-sfx1-sources.jar \
+        -Dfile=driver-core/target/cassandra-driver-core-3.9.0-sfx2.jar \
+        -Dsources=driver-core/target/cassandra-driver-core-3.9.0-sfx2-sources.jar \
         -DrepositoryId=sf.internal \
         -Durl=http://mvn.corp.signalfx.com:8080/archiva/repository/internal
 
