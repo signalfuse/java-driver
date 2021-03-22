@@ -8,7 +8,7 @@ This fork contains several local commits specific to our deployment of cassandra
 
     mvn clean install
 
-#### To deploy the cassandra-driver-core artifact
+#### To deploy the cassandra artifacts
 
     mvn deploy:deploy-file \
         -DpomFile=driver-core/pom.xml \
@@ -21,6 +21,34 @@ This fork contains several local commits specific to our deployment of cassandra
         -DpomFile=driver-core/pom.xml \
         -Dfile=driver-core/target/cassandra-driver-core-3.9.0-sfx2.jar \
         -Dsources=driver-core/target/cassandra-driver-core-3.9.0-sfx2-sources.jar \
+        -DrepositoryId=sf.internal \
+        -Durl=http://mvn.corp.signalfx.com:8080/archiva/repository/internal
+
+    mvn deploy:deploy-file \
+        -DpomFile=driver-extras/pom.xml \
+        -Dfile=driver-extras/target/cassandra-driver-extras-3.9.0-sfx2.jar \
+        -Dsources=driver-extras/target/cassandra-driver-extras-3.9.0-sfx2-sources.jar \
+        -DrepositoryId=sf.internal \
+        -Durl=http://mvn-master.corp.signalfx.com:8080/archiva/repository/internal
+
+    mvn deploy:deploy-file \
+        -DpomFile=driver-extras/pom.xml \
+        -Dfile=driver-extras/target/cassandra-driver-extras-3.9.0-sfx2.jar \
+        -Dsources=driver-extras/target/cassandra-driver-extras-3.9.0-sfx2-sources.jar \
+        -DrepositoryId=sf.internal \
+        -Durl=http://mvn.corp.signalfx.com:8080/archiva/repository/internal
+
+    mvn deploy:deploy-file \
+        -DpomFile=driver-mapping/pom.xml \
+        -Dfile=driver-mapping/target/cassandra-driver-mapping-3.9.0-sfx2.jar \
+        -Dsources=driver-mapping/target/cassandra-driver-mapping-3.9.0-sfx2-sources.jar \
+        -DrepositoryId=sf.internal \
+        -Durl=http://mvn-master.corp.signalfx.com:8080/archiva/repository/internal
+
+    mvn deploy:deploy-file \
+        -DpomFile=driver-mapping/pom.xml \
+        -Dfile=driver-mapping/target/cassandra-driver-mapping-3.9.0-sfx2.jar \
+        -Dsources=driver-mapping/target/cassandra-driver-mapping-3.9.0-sfx2-sources.jar \
         -DrepositoryId=sf.internal \
         -Durl=http://mvn.corp.signalfx.com:8080/archiva/repository/internal
 
